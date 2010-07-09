@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
      "README",
      "Rakefile",
+     "Relayfile",
      "bin/bunnicula",
      "bunnicula.gemspec",
-     "config/amqp.yml",
      "config/arguments.rb",
      "config/boot.rb",
      "config/environment.rb",
@@ -33,30 +33,28 @@ Gem::Specification.new do |s|
      "config/post-daemonize/readme",
      "config/pre-daemonize/bunnicula.rb",
      "config/pre-daemonize/readme",
-     "config/relay.rb",
-     "config/relays/development.rb",
-     "config/relays/production.rb",
-     "config/relays/test.rb",
      "lib/bunnicula.rb",
+     "lib/bunnicula/amqp.rb",
      "lib/bunnicula/bunny_farm.rb",
      "lib/bunnicula/dsl_base.rb",
      "lib/bunnicula/exchange.rb",
+     "lib/bunnicula/rabbit.rb",
      "lib/bunnicula/relay.rb",
      "lib/bunnicula/support.rb",
      "lib/bunnicula/vampire_rabbit.rb",
      "lib/bunnicula/version.rb",
      "libexec/bunnicula-daemon.rb",
-     "test/config/relay.rb",
+     "test/config/Relayfile.rb",
      "test/lib/bunnicula_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/PlasticLizard/bunnicula}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{A very simple relay for moving messages from a local broker to a remote broker}
   s.test_files = [
-    "test/config/relay.rb",
+    "test/config/Relayfile.rb",
      "test/lib/bunnicula_test.rb",
      "test/test_helper.rb"
   ]
@@ -65,7 +63,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<daemon-kit>, ["= 0.1.7.12"])
       s.add_runtime_dependency(%q<bunny>, ["= 0.6.0"])
       s.add_runtime_dependency(%q<amqp>, ["= 0.6.7"])
