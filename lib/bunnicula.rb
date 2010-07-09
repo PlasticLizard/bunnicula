@@ -30,7 +30,7 @@ module Bunnicula
     alias configure bite
 
     def victim(host=nil,&block)
-      return (@@victim ||= nil) unless host || block_given?
+      return (@@victim ||= Bunnicula::Rabbit.new) unless host || block_given?
       @@victim = Bunnicula::Rabbit.new(host)
       if block_given?
         if block.arity > 0
