@@ -12,7 +12,7 @@ class Bunnicula::Relay
   end
 
   def to(*args)
-    return @target_exchange if args.length == 0
+    return @target_exchange || @source_exchange if args.length == 0
     options = args.extract_options!
     exchange_name = args.pop
     @target_exchange = Bunnicula::Exchange.new(exchange_name,options)
