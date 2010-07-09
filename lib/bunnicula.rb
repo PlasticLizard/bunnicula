@@ -7,6 +7,7 @@ dir = File.dirname(__FILE__)
  "dsl_base",
  "exchange",
  "relay",
+ "rabbit",
  "vampire_rabbit",].each {|lib|require File.join(dir,'bunnicula',lib)}
 
 

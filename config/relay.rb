@@ -1,3 +1,15 @@
+Bunnicula.bite {
+  host "source_amqp_server"
+  port 12345
+  username "a"
+  password "b"
+  vhost "/"
+
+  transfusion_to do
+    relay "my_exchange"  
+  end
+}
+
 #Bunnicula.transfusion {
 #   relay "my_exchange"
 #}

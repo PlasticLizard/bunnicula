@@ -14,7 +14,7 @@ end
 
 begin
   require 'jeweler'
-  require File.dirname(__FILE__) + "/lib/cubicle/version"
+  require File.dirname(__FILE__) + "/lib/bunnicula/version"
 
   Jeweler::Tasks.new do |s|
     s.name = "bunnicula"
@@ -26,7 +26,7 @@ begin
     s.authors = ["Nathan Stults"]
     s.has_rdoc = false #=>Should be true, someday
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-    s.files = FileList["[A-Z]*", "{bin,lib,libexec,test}/**/*"]
+    s.files = FileList["[A-Z]*", "{bin,lib,config,libexec,test}/**/*"]
 
     s.add_dependency('daemon-kit', '0.1.7.12')
     s.add_dependency('bunny', '0.6.0')

@@ -1,11 +1,4 @@
-class Bunnicula::VampireRabbit
-  extend Bunnicula::DslBase
-
-  #DSL
-  dsl_attr :host, :default=>"localhost"
-  dsl_attr :username, :password, :default=>"guest"
-  dsl_attr :vhost, :default=>"/"
-  dsl_attr :port, :default=>5672
+class Bunnicula::VampireRabbit < Bunnicula::Rabbit
 
   attr_reader :relays
 

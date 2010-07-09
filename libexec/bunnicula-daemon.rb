@@ -13,7 +13,7 @@ end
 
 # Run an event-loop for processing
 Bunnicula.initialize
-DaemonKit::AMQP.run do
+Bunnicula::AMQP.run do
   # Inside this block we're running inside the reactor setup by the
   # amqp gem. Any code in the examples (from the gem) would work just
   # fine here.
