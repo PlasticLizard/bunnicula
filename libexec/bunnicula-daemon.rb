@@ -8,15 +8,11 @@ DaemonKit::Application.running! do |config|
   # config.trap( 'INT' ) do
   #   # do something clever
   # end
-  # config.trap( 'TERM', Proc.new { puts 'Going down' } )
+  config.trap( 'TERM', Proc.new { Bunnicula::BunnyFarm.stop } )
 end
 
-# IMPORTANT CONFIGURATION NOTE
-#
-# Please review and update 'config/amqp.yml' accordingly or this
-# daemon won't work as advertised.
-
 # Run an event-loop for processing
+Bunnicula.initialize
 DaemonKit::AMQP.run do
   # Inside this block we're running inside the reactor setup by the
   # amqp gem. Any code in the examples (from the gem) would work just
@@ -31,7 +27,5 @@ DaemonKit::AMQP.run do
   # end
 
   amq = ::MQ.new
-  amq.queue('test').subscribe do |msg|
-    DaemonKit.logger.debug "Received message: #{msg.inspect}"
-  end
+  Bunnicula.bite(amq)
 end

@@ -4,6 +4,16 @@
 #ENV['DAEMON_ENV'] ||= 'production'
 
 # Boot up
+require "rubygems"
+
+begin
+  require 'amqp'
+  require 'mq'
+rescue LoadError
+  $stderr.puts "Missing amqp gem. Please run 'gem install amqp'."
+  exit 1
+end
+
 require File.join(File.dirname(__FILE__), 'boot')
 
 DaemonKit::Initializer.run do |config|

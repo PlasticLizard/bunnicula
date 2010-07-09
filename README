@@ -1,48 +1,30 @@
-DaemonKit README
-================
+== Overview
 
-DaemonKit has generated a skeleton Ruby daemon for you to build on. Please read
-through this file to ensure you get going quickly.
+== Motivation
 
-Directories
-===========
+== Approach
 
-bin/
-  bunnicula - Stub executable to control your daemon with
+== Install
 
-config/
-  Environment configuration files
+Install the gem with:
 
-lib/
-  Place for your libraries
-
-libexec/
-  bunnicula.rb - Your daemon code
-
-log/
-  Log files based on the environment name
-
-spec/
-  rspec's home
-
-tasks/
-  Place for rake tasks
-
-vendor/
-  Place for unpacked gems and DaemonKit
-
-tmp/
-  Scratch folder
+    gem install bunnicula
+          or
+    sudo gem install bunnicula
 
 
-Logging
-=======
+== An Example
 
-One of the biggest issues with writing daemons are gettign insight into what your
-daemons are doing. Logging with DaemonKit is simplified as DaemonKit creates log
-files per environment in log.
+== Limitations
+* Cubicle cannot currently cause child documents to be emitted in the map reduce. This is a pretty big limitation, and will be resolved shortly.
+* Documentation is non-existent. This is being worked on (head that one before?)
+* Test coverage is OK, but the tests could be better organized
+* Code needs to be modularized a bit, main classes are pretty hairy at the moment
 
-On all environments except production the log level is set to DEBUG, but you can
-toggle the log level by sending the running daemon SIGUSR1 and SIGUSR2 signals.
-SIGUSR1 will toggle between DEBUG and INFO levels, SIGUSR2 will blatantly set the
-level to DEBUG.
+
+== Bugs/Issues
+Please report them {on github}[http://github.com/plasticlizard/bunnicula/issues].
+
+== Links
+
+== Todo
