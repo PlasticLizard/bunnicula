@@ -3,14 +3,23 @@ require "test_helper"
 class BunniculaTest < Test::Unit::TestCase
   context "Excuting a representative relay file" do
     setup do
-      require "config/relay"
+      require "config/Relayfile"
+    end
+
+    should "configure the victim" do
+      victim = Bunnicula.victim
+      assert_equal "a-host", victim.host
+      assert_equal 12345, victim.port
+      assert_equal "a", victim.username
+      assert_equal "b", victim.password
+      assert_equal "/tada", victim.vhost 
     end
     should "configure two vampire rabbits" do
       assert_equal 2, Bunnicula.vampire_rabbits.length
     end
     should "use default values for target rabbit connection when no overrides present" do
       vamp = Bunnicula.vampire_rabbits[0]
-      assert_equal "localhost", vamp.host
+      assert_equal "example.com", vamp.host
       assert_equal 5672, vamp.port
       assert_equal "guest", vamp.username
       assert_equal "guest", vamp.password

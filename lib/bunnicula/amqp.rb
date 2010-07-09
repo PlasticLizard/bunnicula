@@ -1,5 +1,10 @@
+
 module Bunnicula
+  # Thin wrapper around the amqp gem, specifically designed to ease
+  # configuration of a AMQP consumer daemon and provide some added
+  # simplicity
   class AMQP
+
     @@instance = nil
 
     class << self
@@ -10,13 +15,14 @@ module Bunnicula
 
       private :new
 
-      def run(&block)
+      def run(config=nil,&block)
+        @instance = new(config) if config
         instance.run(&block)
       end
     end
 
     def initialize( config = {} )
-      @config = config
+      @config = config || DaemonKit::Config.load('amqp').to_h( true )
     end
 
     def run(&block)

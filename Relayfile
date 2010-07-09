@@ -1,0 +1,9 @@
+#Bunnicula.bite {
+#  victim "localhost"
+#
+#  transfusion_to("remote-host") {
+#    relay "source_exchange" do
+#      to "target_exchange"
+#    end
+#  }
+#}

@@ -3,6 +3,7 @@ require "bunny"
 
 dir = File.dirname(__FILE__)
 ["support",
+ "amqp",
  "bunny_farm",
  "dsl_base",
  "exchange",
@@ -12,27 +13,49 @@ dir = File.dirname(__FILE__)
 
 
 module Bunnicula
+  class << self
 
-  def self.initialize
-    default_relay = File.join(DAEMON_ROOT,"relay.rb")
-    require default_relay if File.exist?(default_relay)
 
-    env_relay_path = File.join(DAEMON_ROOT,"config","relays",DAEMON_ENV+".rb")
-    require env_relay_path if File.exist?(env_relay_path)
+    def suck(amq)
+      vampire_rabbits.each {|vampire|vampire.suck(amq)}
+    end
+
+    def vampire_rabbits
+      @@vampire_rabbits ||= []
+    end
+
+    def bite(&block)
+      instance_eval(&block)
+    end
+    alias configure bite
+
+    def victim(host=nil,&block)
+      return (@@victim ||= nil) unless host || block_given?
+      @@victim = Bunnicula::Rabbit.new(host)
+      if block_given?
+        if block.arity > 0
+          block.call(@@victim)
+        else
+          @@victim.instance_eval(&block)
+        end
+      end
+    end
+    alias source victim
+
+    def transfusion_to(host=nil,&block)
+      rabbit = Bunnicula::VampireRabbit.new(host)
+      if block_given?
+        if (block.arity > 0)
+          block.call(rabbit)
+        else
+          rabbit.instance_eval(&block)
+        end
+      end
+      vampire_rabbits << rabbit
+      rabbit
+    end
+    alias target transfusion_to
+
   end
 
-  def self.bite(amq)
-    vampire_rabbits.each {|vampire|vampire.bite(amq)}
-  end
-
-  def self.vampire_rabbits
-    @@vampire_rabbits ||= []
-  end
-
-  def self.transfusion(&block)
-    rabbit = Bunnicula::VampireRabbit.new
-    rabbit.instance_eval(&block)
-    vampire_rabbits << rabbit
-    rabbit
-  end
 end

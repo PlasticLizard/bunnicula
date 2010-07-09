@@ -2,7 +2,8 @@ class Bunnicula::VampireRabbit < Bunnicula::Rabbit
 
   attr_reader :relays
 
-  def initialize
+  def initialize(host=nil)
+    super(host)
     @relays = []
   end
 
@@ -12,12 +13,18 @@ class Bunnicula::VampireRabbit < Bunnicula::Rabbit
     args.each do |from_exchange_name|
       relay = Bunnicula::Relay.new
       relay.from(from_exchange_name,options.dup)
-      relay.instance_eval(&block) if block_given?
+      if block_given?
+        if (block.arity > 0)
+          block.call(relay)
+        else
+          relay.instance_eval(&block)
+        end
+      end
       @relays << relay
     end
   end
 
-  def bite(amq)
+  def suck(amq)
     DaemonKit.logger.info "Setting up relays to #{host}:#{port}, vhost=#{vhost} as #{username}"
     @bunny = Bunnicula::BunnyFarm.breed(:host=>host, :port=>port, :vhost=>vhost, :user=>username, :pass=>password)
     @relays.each do |relay|
