@@ -1,18 +1,8 @@
 == Overview
-Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la {daemon-kit}[http://github.com/kennethkalmer/daemon-kit]). Similar in intent to {shovel}[http://www.lshift.net/blog/2010/02/01/rabbitmq-shovel-message-relocation-equipment]
-Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability, and those messages are then transmitted across a WAN to an AMQP broker
-that will distribute the messages to remote consumers.
-
-Bunnicula is designed to listen to messages published to any number of queues on a single source broker and distribute those messages to any number of target servers/exchanges.
+Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la {daemon-kit}[http://github.com/kennethkalmer/daemon-kit]). Similar in intent to {shovel}[http://www.lshift.net/blog/2010/02/01/rabbitmq-shovel-message-relocation-equipment],
+Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability which are then subsequently relayed to a remote AMQP instance by a relay process which isn't so irritable as message producers tend to be when it comes to network speed and reliability.
 
 Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments.
-
-== Motivation
-While LShift maintains a relay called "Shovel" that is tightly integrated with RabbitMQ, the setup and configuration of that plugin required building specific versions of the broker and other acrobatic feats that proved too much for my feeble brain (and appetite for deployment complexity).
-
-== Approach
-Bunnicula uses the AMQP gem (which in turn runs on Event Machine) to create a (optionally durable) queue bound to each configured message exchange. When it receives a message on this exchange, it uses Bunny, a synchronous AMQP library, to immediately publish that message to a target AMQP broker and (optionally) ack the original message once this is successful.
-By default, Bunnicula will re-use the configuration details for the source exchange (exchange name, durability and exchange type) but can be configured to publish to alternate exchanges as desired.
 
 == Install
 
@@ -22,8 +12,21 @@ Install the gem with:
           or
     sudo gem install bunnicula
 
+== Quick Start
+relay messages published to the direct exchange 'my.exchange' on localhost to the direct exchange 'my.exchange' on my.remote.broker
 
-== Suck some Blood(y messages)
+    bunnicula start --target my.remote.broker --relay my.exchange
+
+
+== Motivation
+While LShift maintains a relay called "Shovel" that is tightly integrated with RabbitMQ, the setup and configuration of that plugin required building specific versions of the broker and other acrobatic feats that proved too much for my feeble brain (and appetite for deployment complexity).
+
+== Approach
+Bunnicula uses the AMQP gem (which in turn runs on Event Machine) to create a (optionally durable) queue bound to each configured message exchange. When it receives a message on this exchange, it uses Bunny, a synchronous AMQP library, to immediately publish that message to a target AMQP broker and (optionally) ack the original message once this is successful.
+By default, Bunnicula will re-use the configuration details for the source exchange (exchange name, durability and exchange type) but can be configured to publish to alternate exchanges as desired.
+
+
+== Suck some Blood(y messages) already
 As a daemon-kit daemon, bunnicula understands the following commands
     * run - run as a regular script, i.e. do not daemonize
     * start - start the daemon
