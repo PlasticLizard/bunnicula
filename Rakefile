@@ -26,7 +26,7 @@ begin
     s.authors = ["Nathan Stults"]
     s.has_rdoc = false #=>Should be true, someday
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-    s.files = FileList["[A-Z]*", "{bin,lib,config,libexec,test}/**/*"]
+    s.files = FileList["[A-Z]*", "{bin,lib,config,vendor,libexec,test}/**/*"]
 
     s.add_dependency('bunny', '0.6.0')
     s.add_dependency('amqp', '0.6.7')
