@@ -20,7 +20,7 @@ begin
     s.name = "bunnicula"
     s.version = Bunnicula::VERSION
     s.summary = "A very simple relay for moving messages from a local broker to a remote broker"
-    s.description = "Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la daemon-kit). Similar in intent to shovel, Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability which are then subsequently relayed to a remote AMQP instance by a relay process which isn’t so irritable as message producers tend to be when it comes to network speed and reliability. Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments."
+    s.description = "Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la daemon-kit). Similar in intent to shovel, Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability which are then subsequently relayed to a remote AMQP instance by a relay process which isnï¿½t so irritable as message producers tend to be when it comes to network speed and reliability. Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments."
     s.email = "hereiam@sonic.net"
     s.homepage = "http://github.com/PlasticLizard/bunnicula"
     s.authors = ["Nathan Stults"]
