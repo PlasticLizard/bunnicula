@@ -20,20 +20,21 @@ module DaemonKit
     end
 
     def vendor_kit?
-      File.exists?( "#{DAEMON_ROOT}/vendor/daemon_kit" )
+      File.exists?( "#{DAEMON_ROOT}/vendor/daemon_kit/daemon_kit" )
     end
   end
 
   class Boot
     def run
       load_initializer
+      DaemonKit::Arguments.parser_available = true
       DaemonKit::Initializer.run
     end
   end
 
   class VendorBoot < Boot
     def load_initializer
-      require "#{DAEMON_ROOT}/vendor/daemon_kit/lib/daemon_kit/initializer"
+      require "#{DAEMON_ROOT}/vendor/daemon_kit/daemon_kit/lib/daemon_kit/initializer"
     end
   end
 

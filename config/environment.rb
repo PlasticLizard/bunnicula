@@ -16,6 +16,7 @@ end
 
 require File.join(File.dirname(__FILE__), 'boot')
 
+DaemonKit::Arguments.parser_available = true
 DaemonKit::Initializer.run do |config|
 
   # The name of the daemon as reported by process monitoring tools

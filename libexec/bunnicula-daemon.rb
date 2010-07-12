@@ -1,5 +1,4 @@
 # Generated amqp daemon
-
 # Do your post daemonization configuration here
 # At minimum you need just the first line (without the block), or a lot
 # of strange things might start happening...

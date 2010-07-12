@@ -28,7 +28,6 @@ begin
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
     s.files = FileList["[A-Z]*", "{bin,lib,config,libexec,test}/**/*"]
 
-    s.add_dependency('daemon-kit', '0.1.7.12')
     s.add_dependency('bunny', '0.6.0')
     s.add_dependency('amqp', '0.6.7')
 

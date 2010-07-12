@@ -1,8 +1,18 @@
 == Overview
+Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la {daemon-kit}[http://github.com/kennethkalmer/daemon-kit]). Similar in intent to {shovel}[http://www.lshift.net/blog/2010/02/01/rabbitmq-shovel-message-relocation-equipment]
+Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability, and those messages are then transmitted across a WAN to an AMQP broker
+that will distribute the messages to remote consumers.
+
+Bunnicula is designed to listen to messages published to any number of queues on a single source broker and distribute those messages to any number of target servers/exchanges.
+
+Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments.
 
 == Motivation
+While LShift maintains a relay called "Shovel" that is tightly integrated with RabbitMQ, the setup and configuration of that plugin required building specific versions of the broker and other acrobatic feats that proved too much for my feeble brain (and appetite for deployment complexity).
 
 == Approach
+Bunnicula uses the AMQP gem (which in turn runs on Event Machine) to create a (optionally durable) queue bound to each configured message exchange. When it receives a message on this exchange, it uses Bunny, a synchronous AMQP library, to immediately publish that message to a target AMQP broker and (optionally) ack the original message once this is successful.
+By default, Bunnicula will re-use the configuration details for the source exchange (exchange name, durability and exchange type) but can be configured to publish to alternate exchanges as desired.
 
 == Install
 
@@ -13,18 +23,82 @@ Install the gem with:
     sudo gem install bunnicula
 
 
-== An Example
+== Suck some Blood(y messages)
+As a daemon-kit daemon, bunnicula understands the following commands
+    * run - run as a regular script, i.e. do not daemonize
+    * start - start the daemon
+    * stop - stop the daemon
+
+Note: when specifying amqp brokers, either on the command line or from the DSL, Bunnicula uses a URI as a connection string.
+So, amqp://usr:pwd@my.broker/my_vhost:12345 will result in Bunnicula connecting to my.broker on port 12345
+with the username 'usr' the password 'pwd' and choosing vhost /my_vhost. All of the options except the host name can be excluded in favor of the
+standard defaults. If you just have a hostname to specify, you don't need the uri syntax, and can just specify the hostname as is, such as "my_source_broker" or "192.168.0.71"
+
+
+== From the command line
+Feel free to type bunnicula --help to get a full list of options that may or may not have adequate documentation of usage.
+
+Relay messages published to a topic exchange named an.exchange.to.replay on amqp://my_source_broker to an identical exchange on a_target_broker:
+
+    bunnicula run --source my_source_broker --target a_target_broker --relay an.exchange.to.relay --type topic --log /var/log/bunnicula
+
+Relay messages published to a topic exchange named a.source.exchange on my_source_broker to a fanout exchange named a.target.exchange on a_target_broker
+
+    bunnicula run --source my_source_broker --target a_target_broker --relay a.source.exchange --type topic --to a.target.exchange --type fanout --log /path/to/my/log
+
+You can specify as many --target flags as you like, each indicating a single target AMQP broker, and you can in turn specify as many --relay flags as you like for each --target.
+Bunnicula currently supports listening to a single source broker per process.
+
+== Configuring Bunnicula via the Ruby DSL
+You can optionally configure bunnicula using a Ruby DSL. If you have a complex configuration or you need a feature not available from the command line (aka message filtering) you can
+select the ruby configuration file you want via the --relay_file flag.
+
+    bunnicula run --relay_file MyRelayFile.rb --log /path/to/my/log
+
+A Relay file will look something like what you see below. In keeping with the vampire rabbit theme evoked by the name of the library, the DSL may be a little colorful for a few of you with your pocket protectors on too tight. For those folks, all the fun has been aliased out of the DSL so your configuration file can look nice and prudish as you please, but you'll need to figure out how from the source.
+
+    Bunnicula.bite {
+      victim "amqp://a:b@a-host:12345/tada"
+
+      transfusion_to "amqp://username:password@example.com:12345" do
+        relay "an exchange name"
+      end
+
+      transfusion_to {
+        host     "target_server_1"
+        port     12345
+        username "a"
+        password "b"
+        vhost    "tada"
+
+        relay do
+          from "test_source_exchange",      :type=>:topic, :durable=>true, :ack=>true
+          to   "test_destination_exchange", :durable=>true
+        end
+
+        relay  "another_exchange",
+               "and_another_exchange",
+               "and_even_another",
+               :type=>:fanout,
+               :durable=>false,
+               :ack=>true
+      }
+    }
+
+The DSL is pretty self explanatory, but keep in mind you can have only one victim, but as many transfusions (which represent a target server) and relays per transfusion as you please.
+In all cases, the plethora of individual host, port, username etc.. command specifying connection options can be replaced by passing a URI of the structure described previously as an argument
+to the command itself.
+
+== Other Resources
+A wealth of information on Bunnicula can be found {here}[http://www.google.com/images?q=bunnicula]
 
 == Limitations
-* Cubicle cannot currently cause child documents to be emitted in the map reduce. This is a pretty big limitation, and will be resolved shortly.
-* Documentation is non-existent. This is being worked on (head that one before?)
-* Test coverage is OK, but the tests could be better organized
-* Code needs to be modularized a bit, main classes are pretty hairy at the moment
-
+* None. Bunnicula is 100% perfect in every way. If you find a problem, you are probably confused and may be high or having a stroke. My first recommendation would be to seek medical attention or check yourself into rehab. If however you insist in persisting in your delusion that Bunnicula has a limitation, or perhaps even more preposterously has made a mistake, you can use the issue tracker at which point I will confirm your insanity and draw on my vast knowledge of shamanistic medicine to recommend an appropriate treatment for your ailment.
 
 == Bugs/Issues
 Please report them {on github}[http://github.com/plasticlizard/bunnicula/issues].
 
-== Links
-
 == Todo
+Per-relay message filtering based on a regex or a code block has been implemented but not tested or documented. I don't really have a use case for such a feature yet in my own
+systems. I should probably remove it until I do, but I didn't. So if this is something that would be useful, put it in the issue tracker
+and I'll finish documenting and testing it. If you want to use it like a cowboy, see relay.rb

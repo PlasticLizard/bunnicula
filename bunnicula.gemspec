@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bunnicula}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nathan Stults"]
-  s.date = %q{2010-07-09}
+  s.date = %q{2010-07-12}
   s.default_executable = %q{bunnicula}
   s.description = %q{A very simple relay for moving messages from a local broker to a remote broker}
   s.email = %q{hereiam@sonic.net}
@@ -65,18 +65,15 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<daemon-kit>, ["= 0.1.7.12"])
       s.add_runtime_dependency(%q<bunny>, ["= 0.6.0"])
       s.add_runtime_dependency(%q<amqp>, ["= 0.6.7"])
       s.add_development_dependency(%q<shoulda>, ["= 2.11.1"])
     else
-      s.add_dependency(%q<daemon-kit>, ["= 0.1.7.12"])
       s.add_dependency(%q<bunny>, ["= 0.6.0"])
       s.add_dependency(%q<amqp>, ["= 0.6.7"])
       s.add_dependency(%q<shoulda>, ["= 2.11.1"])
     end
   else
-    s.add_dependency(%q<daemon-kit>, ["= 0.1.7.12"])
     s.add_dependency(%q<bunny>, ["= 0.6.0"])
     s.add_dependency(%q<amqp>, ["= 0.6.7"])
     s.add_dependency(%q<shoulda>, ["= 2.11.1"])

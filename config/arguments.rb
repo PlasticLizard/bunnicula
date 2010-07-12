@@ -11,8 +11,7 @@
 #  @options[:foo] = foo
 # end
 
-
-opts.on('-c PATH','--config_path PATH') do |config|
+opts.on('--relay_file PATH') do |config|
   @options[:configuration_file] = config
 end
 
