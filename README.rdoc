@@ -28,9 +28,9 @@ By default, Bunnicula will re-use the configuration details for the source excha
 
 == Suck some Blood(y messages) already
 As a daemon-kit daemon, bunnicula understands the following commands
-    * run - run as a regular script, i.e. do not daemonize
-    * start - start the daemon
-    * stop - stop the daemon
+* run - run as a regular script, i.e. do not daemonize
+* start - start the daemon
+* stop - stop the daemon
 
 Note: when specifying amqp brokers, either on the command line or from the DSL, Bunnicula uses a URI as a connection string.
 So, amqp://usr:pwd@my.broker/my_vhost:12345 will result in Bunnicula connecting to my.broker on port 12345
@@ -61,24 +61,36 @@ select the ruby configuration file you want via the --relay_file flag.
 A Relay file will look something like what you see below. In keeping with the vampire rabbit theme evoked by the name of the library, the DSL may be a little colorful for a few of you with your pocket protectors on too tight. For those folks, all the fun has been aliased out of the DSL so your configuration file can look nice and prudish as you please, but you'll need to figure out how from the source.
 
     Bunnicula.bite {
+
+      #Bunnicula will listen for incoming messages on the following host:
       victim "amqp://a:b@a-host:12345/tada"
 
+      #This sets up a target broker
       transfusion_to "amqp://username:password@example.com:12345" do
-        relay "an exchange name"
+
+        #Relay all messages published to "an.exchange.name", using the default type of 'direct', durable=true, ack=true
+        relay "an.exchange.name"
+
       end
 
+      #A second target broker
       transfusion_to {
+
+        #Specify connection settings the long way
         host     "target_server_1"
         port     12345
         username "a"
         password "b"
         vhost    "tada"
 
+        #Set up a relay with a destination exchange that varies its configuration from the source exchange
         relay do
           from "test_source_exchange",      :type=>:topic, :durable=>true, :ack=>true
           to   "test_destination_exchange", :durable=>true
         end
 
+        #Set up a group of relays that share a common configuration. All exchange settings specified in this way
+        #will be mirrored on the destination broker.
         relay  "another_exchange",
                "and_another_exchange",
                "and_even_another",
