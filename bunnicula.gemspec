@@ -15,11 +15,12 @@ Gem::Specification.new do |s|
   s.email = %q{hereiam@sonic.net}
   s.executables = ["bunnicula"]
   s.extra_rdoc_files = [
-    "LICENSE.txt"
+    "LICENSE.txt",
+     "README.rdoc"
   ]
   s.files = [
     "LICENSE.txt",
-     "README",
+     "README.rdoc",
      "Rakefile",
      "Relayfile",
      "bin/bunnicula",
