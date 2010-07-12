@@ -20,7 +20,10 @@ module DaemonKit
     end
 
     def vendor_kit?
-      File.exists?( "#{DAEMON_ROOT}/vendor/daemon_kit/daemon_kit" )
+      lib_path = "#{DAEMON_ROOT}/vendor/daemon-kit/lib/daemon_kit.rb"
+      puts lib_path
+      File.exists?( lib_path )
+      true
     end
   end
 
@@ -34,7 +37,7 @@ module DaemonKit
 
   class VendorBoot < Boot
     def load_initializer
-      require "#{DAEMON_ROOT}/vendor/daemon_kit/daemon_kit/lib/daemon_kit/initializer"
+      require "#{DAEMON_ROOT}/vendor/daemon-kit/lib/daemon_kit/initializer"
     end
   end
 
