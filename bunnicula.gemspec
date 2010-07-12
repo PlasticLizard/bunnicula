@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Nathan Stults"]
   s.date = %q{2010-07-12}
   s.default_executable = %q{bunnicula}
-  s.description = %q{Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la daemon-kit). Similar in intent to shovel, Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability which are then subsequently relayed to a remote AMQP instance by a relay process which isn’t so irritable as message producers tend to be when it comes to network speed and reliability. Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments.}
+  s.description = %q{Bunnicula is a simple AMQP relay implemented as a ruby daemon (a-la daemon-kit). Similar in intent to shovel, Bunnicula is intended to enable the common messaging scenario where services and applications publish messages to an AMQP broker on the local LAN for speed and reliability which are then subsequently relayed to a remote AMQP instance by a relay process which isnï¿½t so irritable as message producers tend to be when it comes to network speed and reliability. Bunnicula can be configured via configuration file (a Ruby DSL) or, for most common configurations, through command line arguments.}
   s.email = %q{hereiam@sonic.net}
   s.executables = ["bunnicula"]
   s.extra_rdoc_files = [
